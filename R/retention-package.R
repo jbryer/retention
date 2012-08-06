@@ -15,7 +15,7 @@ NULL
 #' 
 #' @name students
 #' @docType data
-#' @format a data frame 3,717,887 records of 5 variables
+#' @format a data frame 1,555,866 records of 5 variables
 #' @source example student enrollment
 #' @keywords datasets
 NULL
@@ -32,5 +32,13 @@ NULL
 
 .onAttach <- function(libname, pkgname) {
 	pkgEnv = pos.to.env(match('package:retention', search()))
-	#assignInNamespace("sqlrepos", paste(system.file(package='retention'), '/data', sep=''), "retention")
+}
+
+monnb <- function(d) { 
+	lt <- as.POSIXlt(as.Date(d, origin="1900-01-01"))
+	lt$year*12 + lt$mon
+} 
+
+mondf <- function(d1, d2) { 
+	monnb(d2) - monnb(d1)
 }

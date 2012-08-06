@@ -1,0 +1,16 @@
+\docType{data}
+\name{students}
+\alias{students}
+\title{Sample student enrollment data. These data do not represent actual data and
+and should not be used for any inferential analysis.}
+\format{a data frame 1,555,866 records of 5 variables}
+\source{
+  example student enrollment
+}
+\description{
+  Sample student enrollment data. These data do not
+  represent actual data and and should not be used for any
+  inferential analysis.
+}
+\keyword{datasets}
+

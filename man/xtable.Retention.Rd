@@ -1,0 +1,29 @@
+\name{xtable.Retention}
+\alias{xtable.Retention}
+\title{Prints LaTeX of CohortRetention summary.}
+\usage{
+  xtable.Retention(x, caption = NULL, label = NULL,
+    align = NULL, digits = NULL, display = NULL,
+    months = c(15, 36, 48, 72, 96), ...)
+}
+\arguments{
+  \item{x}{an R object of type CohortRetention.}
+
+  \item{caption}{the table caption.}
+
+  \item{label}{the table label.}
+
+  \item{align}{the alignment used for cell placement.
+  Unused for grouped results.}
+
+  \item{digits}{the number of digits to display.}
+
+  \item{display}{currently ignored.}
+
+  \item{...}{other parameters passed to xtable and
+  print.xtable.}
+}
+\description{
+  Prints LaTeX of CohortRetention summary.
+}
+

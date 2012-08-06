@@ -1,13 +1,11 @@
 #'
 #' @export
-plotRetentionOverall <- function(students, grads, summary=NULL, retentionMonths=c(15), 
-								 completionMonths=c(36, 48, 72, 96), legend.position='none'
-								 ) {
-	if(is.null(summary)) {
-		long2 = retention(students, grads)
-	} else {
-		long2 = summary
-	}
+plot.RetentionOverall <- function(ret, 
+								  retentionMonths=c(15), 
+								  completionMonths=c(36, 48, 72, 96), 
+								  legend.position='none',
+								  ...) {
+	long2 = ret$Summary
 	
 	wt = cast(long2, Month ~ Cohort, value='Enrollments')
 	gr = cast(long2, Month ~ Cohort, value='GraduationRate')

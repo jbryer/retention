@@ -3,11 +3,12 @@ install.packages(c('devtools', 'roxygen2', 'RSQLite', 'ipeds'),
 
 require(devtools)
 require(roxygen2)
-require(RSQLite)
-require(ipeds)
 
-setwd("~/Dropbox/Projects") #Mac
-setwd("C:/Dropbox/Projects") #Windows
+if(Sys.info()['sysname'] == 'Windows') {
+	setwd("C:/Dropbox/Projects") #Windows	
+} else if(Sys.info()['sysname'] == 'Darwin') {
+	setwd("~/Dropbox/Projects") #Mac
+}
 
 #Package building
 document("retention")
@@ -15,7 +16,7 @@ check_doc("retention")
 build("retention", binary=FALSE)
 build("retention", binary=TRUE)
 install("retention")
-check("retention")
 library(retention)
 ls('package:retention')
+check("retention")
 

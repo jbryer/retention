@@ -5,15 +5,29 @@ plot.CohortRetention <- function(cohortRetention,
 								textsize=3, 
 								reverse=TRUE, 
 								title="Cohort Based Retention", 
-								xlab='Monthly Cohort', 
+								xlab='Cohort', 
 								ylab1='Percentage',
 								ylab2='Cohort Size',
 								legend.position=c(.1,.7), 
 								legend.justification='left',
 								retentionMonths=c(15),
 								completionMonths=c(36, 48, 72, 96), 
-								plot.histogram=TRUE, ...) {
-	results = cohortRetention$summary
+								plot.histogram=TRUE, 
+								useGridExtra = TRUE,
+								...) {
+	if(!is.null(cohortRetention$grouping)) {
+		tmp1 = cohortRetention$Summary[,c('Month','RetentionRate','Group')]
+		tmp2 = cohortRetention$Summary[,c('Month','GraduationRate','Group')]
+		names(tmp1)[2] = 'Rate'
+		names(tmp2)[2] = 'Rate'
+		tmp1$Type = 'Retention'
+		tmp2$Type = 'Completion'
+		tmp = rbind(tmp1, tmp2)
+		p = ggplot(tmp, aes(x=Month, y=Rate, colour=Group, linetype=Type)) + geom_path() 
+		return(p)
+	}
+	
+	results = cohortRetention$Summary
 	students = cohortRetention$Students
 	
 	t = melt(results[,1:6], id='Cohort')
@@ -97,6 +111,7 @@ plot.CohortRetention <- function(cohortRetention,
 		df2 = results[,c('Cohort', 'Enrollments')]
 		plot2 = ggplot(df2, aes(x=Cohort, y=Enrollments), stat='identity') + 
 			geom_bar(colour='grey', fill='grey', alpha=.7) + 
+			#opts(axis.text.x=theme_text(angle=-90, size=unit(8,'points'), hjust=0)) + 
 			opts(axis.ticks=theme_blank(), axis.text.x=theme_blank()) + 
 			geom_text(aes(label=Enrollments), angle=-90, vjust=.5, hjust=-.1, size=textsize) + 
 			ylab(ylab2) + xlab(NULL)
@@ -109,19 +124,15 @@ plot.CohortRetention <- function(cohortRetention,
 				 panel.border=theme_blank())
 	
 	if(plot.histogram) {
-		useGridExtra = FALSE
 		if(useGridExtra) {
-			#leg = ggplotGrob(plot1 + opts(keep="legend_box"))
-			#legend = gTree(children=gList(leg), cl="legendGrob")
-			#widthDetails.legendGrob <- function(x) unit(5, "cm")
-			grid.arrange(plot2 + opts(plot.margin=unit(c(0,0,-1,0), "cm"), 
-									  axis.text.y=theme_blank()), 
-						 plot1 + opts(plot.margin=unit(c(0,0,0,0), "cm"), 
-						 			 axis.text.y=theme_blank()),
-						 #legend = legend,
-						 main = title, 
-						 heights = c(.2,.8), ncol=1, nrow=2
-					)
+			grid_layout = grid.layout(nrow=2, ncol=1, 
+									  widths=c(5), #TODO: may want these to be parameters
+									  heights=c(1,3), respect=TRUE)
+			grid.newpage()
+			pushViewport( viewport( layout=grid_layout ) )
+			retention:::align.plots(grid_layout, 
+						list(plot2, 1, 1), 
+						list(plot1 + opts(legend.position='none'), 2, 1))
 		} else {
 			empty <- plyr::empty
 			Layout <- grid.layout(nrow = 2, ncol = 1)

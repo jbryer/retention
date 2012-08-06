@@ -1,8 +1,9 @@
 \name{cohortDetails}
 \alias{cohortDetails}
-\title{Estimates cohort retention.}
+\title{Internal method.
+Estimates cohort retention.}
 \usage{
-  cohortDetails(students, grads,
+  cohortDetails(students, graduates,
     studentIdColumn = "CONTACT_ID_SEQ",
     degreeColumn = "DEGREE_CODE",
     persistColumn = "PERSIST_FLAG",
@@ -10,6 +11,6 @@
     gradColumn = "START_DATE", min.cell.size = 5)
 }
 \description{
-  Estimates cohort retention.
+  Internal method. Estimates cohort retention.
 }
 

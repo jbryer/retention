@@ -13,7 +13,8 @@ Depends:
     ggplot2,
     xtable,
     psych,
-    reshape
+    reshape,
+    grid
 Collate:
     'Retention.R'
     'plot.CohortRetention.R'
@@ -22,3 +23,10 @@ Collate:
     'plot.RetentionOverall.R'
     'retention.latex.R'
     'retention.summary.R'
+    'retention-package.R'
+    'CohortRetention.R'
+    'align.R'
+    'summary.CohortRetention.r'
+    'summary.retention.r'
+    'xtable.CohortRetention.R'
+    'xtable.Retention.R'
