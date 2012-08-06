@@ -2,7 +2,7 @@
 #' @export
 studentDetails <- function(students, grads, months=c(15,24), ...) {
 	students = students[order(students[,warehouseDateColumn], na.last=FALSE),]
-	graduates = graduates[order(graduates[,gradColumn], na.last=FALSE),]
+	grads = grads[order(grads[,gradColumn], na.last=FALSE),]
 	
 	cohorts = unique(students[!is.na(students[,warehouseDateColumn]),warehouseDateColumn])
 	
@@ -27,7 +27,7 @@ studentDetails <- function(students, grads, months=c(15,24), ...) {
 #' Estimates retention.
 #' 
 #' @param students data frame containing all the student information.
-#' @param graduates data frame containing all graduate information.
+#' @param grads data frame containing all graduate information.
 #' @param warehouseDateColumn the name of the column representing the date the
 #'        record was recorded. This is the basis for defining cohorts.
 #' @param the name of the grouping column if rates by a group are desired.
@@ -37,7 +37,7 @@ studentDetails <- function(students, grads, months=c(15,24), ...) {
 retention <- function(students, grads, warehouseDateColumn='CREATED_DATE', 
 					  gradColumn='START_DATE', grouping=NULL, ...) {
 	students = students[order(students[,warehouseDateColumn], na.last=FALSE),]
-	graduates = graduates[order(graduates[,gradColumn], na.last=FALSE),]
+	grads = grads[order(grads[,gradColumn], na.last=FALSE),]
 	
 	cohorts = unique(students[!is.na(students[,warehouseDateColumn]),warehouseDateColumn])
     
