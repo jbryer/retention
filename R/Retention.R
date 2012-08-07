@@ -40,15 +40,32 @@ retention <- function(students, grads, warehouseDateColumn='CREATED_DATE',
 	grads = grads[order(grads[,gradColumn], na.last=FALSE),]
 	
 	cohorts = unique(students[!is.na(students[,warehouseDateColumn]),warehouseDateColumn])
-    
+    cohorts = cohorts[order(cohorts, decreasing=FALSE)]
+	
     results <- list()
     for(i in length(cohorts):3) {
-        result = cohortRetention(students, grads, gradColumn=gradColumn,
-        						 warehouseDateColumn=warehouseDateColumn, 
-        						 grouping = grouping, ...)
-        if(!is.null(result$Summary)) {
-            results[[as.character(cohorts[i])]] = result$Summary
-        }
+    	tryCatch( {
+	        result = cohortRetention(students, grads, gradColumn=gradColumn,
+	        						 warehouseDateColumn=warehouseDateColumn, 
+	        						 grouping = grouping)
+	        if(!is.null(result$Summary)) {
+	            results[[as.character(cohorts[i])]] = result$Summary
+	        }
+	        },
+    		error = function(e) { 
+    			warning(paste('Error calculating cohort retention with ',
+    						   cohorts[i], ' reference cohort. Results will not ',
+    						  'be included. Try the following to debug further:\n',
+    						  "students <- students[students$", warehouseDateColumn, 
+    						      " <= as.Date('", cohorts[i], "'),]\n",
+    						  "cohortRetention(students, grads, warehouseDateColumn='", 
+    						      warehouseDateColumn, "', gradColumn='", gradColumn, 
+    						      "', grouping='", grouping, "')\n", 
+    						  sep=''))
+    		},
+    		finally = {}
+    	)
+	        
         remove = -which(students[,warehouseDateColumn] == cohorts[i])
         if(length(remove) > 0) {
             students = students[remove,]
