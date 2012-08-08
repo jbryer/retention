@@ -45,9 +45,9 @@ retention <- function(students, grads, warehouseDateColumn='CREATED_DATE',
     results <- list()
     for(i in length(cohorts):3) {
     	tryCatch( {
-	        result = cohortRetention(students, grads, gradColumn=gradColumn,
+	        result <- cohortRetention(students, grads, gradColumn=gradColumn,
 	        						 warehouseDateColumn=warehouseDateColumn, 
-	        						 grouping = grouping)
+	        						 grouping = grouping, ...)
 	        if(!is.null(result$Summary)) {
 	            results[[as.character(cohorts[i])]] = result$Summary
 	        }
