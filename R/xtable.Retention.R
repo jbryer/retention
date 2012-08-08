@@ -10,9 +10,10 @@
 #' @export
 xtable.Retention <- function(x, caption=NULL, label=NULL, align=NULL, digits=NULL,
 								   display=NULL, 
-								   months=c(15, 36, 48, 72, 96),
+								   retentionMonths=c(15), 
+							 	   completionMonths=c(36, 48, 72, 96),
 								   ...) {
-	retsum = summary(x, months=months)
+	retsum = summary(x, months=c(retentionMonths, completionMonths))
 	retsum$Month = as.integer(retsum$Month)
 	
 	if(is.null(retsum$Group)) {
