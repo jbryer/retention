@@ -7,13 +7,10 @@ xtable.CohortRetention <- function(x, caption=NULL, label=NULL, align=NULL, digi
 								   sparkline.completion.rect=NULL, 
 								   sparkline.width=10, 
 								   sparkline.height=NULL, 
-								   completion.month=48,
-							 	   min.cell.size=20,
+								   retentionMonths=c(15), 
+								   completionMonths=c(36, 48, 72, 96),
+								   min.cell.size=20,
 								   ...) {
-	# cohortSummaryLaTeX <- function(ret, category='Category', category.align="l", 
-	# 							   caption='Retention Summary', label='retentionSummary', 
-	# 							   sparkline.retention.rect=NULL, sparkline.completion.rect=NULL, 
-	# 							   sparkline.width=10, sparkline.height=NULL, completion.month=48) {
 	sparklineTex <- function(df, width=sparkline.width, height=sparkline.height, 
 							 rect=NULL, sparkdot.color='red', n=24) {
 		if(nrow(df) > n) {
@@ -32,10 +29,17 @@ xtable.CohortRetention <- function(x, caption=NULL, label=NULL, align=NULL, digi
 		return(str)
 	}
 	
-	retsum = summary(x)
-	for(i in c(3,5,7,9, 11)) { 
-		retsum[which(retsum[,i] < min.cell.size), (i-1)] = NA
-		retsum[!is.na(retsum[,i]),i] = paste(' (', retsum[!is.na(retsum[,i]),i], ')', sep='')
+	retsum = summary(x, months=c(retentionMonths, completionMonths))
+	retsum[retsum$Enrollments < min.cell.size, c('RetentionRate', 'GraduationRate')] = NA
+	
+	n = as.data.frame(cast(retsum, Group ~ Month, value='Enrollments'))
+	rr = as.data.frame(cast(retsum, Group ~ Month, value='RetentionRate'))
+	cr = as.data.frame(cast(retsum, Group ~ Month, value='GraduationRate'))
+	
+	tmp = cbind(rr[,as.character(retentionMonths)], cr[,as.character(completionMonths)])
+	names(tmp) = paste(c(retentionMonths, completionMonths), '-Months', sep='')
+	for(i in 2:ncol(n)) {
+		
 	}
 	
 	retsum$RetentionSparkline = as.character(NA)

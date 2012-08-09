@@ -25,17 +25,17 @@ xtable.Retention <- function(x, caption=NULL, label=NULL, align=NULL, digits=NUL
 		g = cast(retsum, Group ~ Month, value='GraduationRate')
 		e = cast(retsum, Group ~ Month, value='Enrollments')
 		tab = data.frame(Group=r[,1])
+		header = ''
 		for(i in retentionMonths) {
 			tab = cbind(tab, r[,as.character(i)], 
 						e[,as.character(i)])
-			names(tab)[(ncol(tab)-1):ncol(tab)] = c(paste(i, '-Months', sep=''),
-													'n')
+			names(tab)[(ncol(tab)-1):ncol(tab)] = c(paste(i, '-Months', sep=''), 'n')
+			header = paste(header, paste('& \\multicolumn{2}{c}{', i, '-Months}', sep=''))
 		}
 		for(i in completionMonths) {
-			tab = cbind(tab, g[,as.character(i)], 
-						e[,as.character(i)])
-			names(tab)[(ncol(tab)-1):ncol(tab)] = c(paste(i, '-Months', sep=''),
-													'n')
+			tab = cbind(tab, g[,as.character(i)], e[,as.character(i)])
+			names(tab)[(ncol(tab)-1):ncol(tab)] = c(paste(i, '-Months', sep=''), 'n')
+			header = paste(header, paste('& \\multicolumn{2}{c}{', i, '-Months}', sep=''))
 		}
 		addtorow <- list()
 		addtorow$pos <- list()
@@ -45,12 +45,13 @@ xtable.Retention <- function(x, caption=NULL, label=NULL, align=NULL, digits=NUL
 									'\\multicolumn{', (length(completionMonths)*2), 
 									'}{c}{Completion Rate} \\\\ ',
 									'\\cline{2-', ncol(tab), '} ',
+									header, ' \\\\ ',
 									sep=''))
 		x = xtable(tab, caption=caption, label=label, digits=digits, 
 				   align=c('l', 'l', rep(c('r@{}', '>{ \\tiny}l'), ((ncol(tab)-1)/2)) ),
 				   ...)
 		print(x, include.rownames=FALSE, 
-			  include.colnames=TRUE, add.to.row=addtorow, 
-			  hline.after=c(nrow(x)), ...)
+			  include.colnames=FALSE, add.to.row=addtorow, 
+			  hline.after=c(0, nrow(x)), ...)
 	}
 }
