@@ -1,7 +1,7 @@
 #' Returns student status at the specified months
 #' @export
 studentDetails <- function(students, grads, 
-						   months=c(15,24), , 
+						   months=c(15,24),
 						   warehouseDateColumn='CREATED_DATE',
 						   ...) {
 	students = students[order(students[,warehouseDateColumn], na.last=FALSE),]
