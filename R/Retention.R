@@ -1,6 +1,9 @@
 #' Returns student status at the specified months
 #' @export
-studentDetails <- function(students, grads, months=c(15,24), ...) {
+studentDetails <- function(students, grads, 
+						   months=c(15,24), , 
+						   warehouseDateColumn='CREATED_DATE',
+						   ...) {
 	students = students[order(students[,warehouseDateColumn], na.last=FALSE),]
 	grads = grads[order(grads[,gradColumn], na.last=FALSE),]
 	
@@ -8,7 +11,7 @@ studentDetails <- function(students, grads, months=c(15,24), ...) {
 	
 	results <- data.frame()
 	for(i in length(cohorts):3) {
-		result = cohortDetails(students, grads, ...)
+		result = cohortDetails(students, grads, warehouseDateColumn=warehouseDateColumn, ...)
 		if(!is.null(result)) {
 			result = result[result$Months %in% months,]
 			if(nrow(result) > 0) {
