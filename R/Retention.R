@@ -3,6 +3,7 @@
 studentDetails <- function(students, grads, 
 						   months=c(15,24),
 						   warehouseDateColumn='CREATED_DATE',
+						   gradColumn='START_DATE',
 						   ...) {
 	students = students[order(students[,warehouseDateColumn], na.last=FALSE),]
 	grads = grads[order(grads[,gradColumn], na.last=FALSE),]
@@ -11,7 +12,9 @@ studentDetails <- function(students, grads,
 	
 	results <- data.frame()
 	for(i in length(cohorts):3) {
-		result = cohortDetails(students, grads, warehouseDateColumn=warehouseDateColumn, ...)
+		result = cohortDetails(students, grads, 
+							   warehouseDateColumn = warehouseDateColumn, 
+							   gradColumn = gradColumn, ...)
 		if(!is.null(result)) {
 			result = result[result$Months %in% months,]
 			if(nrow(result) > 0) {
