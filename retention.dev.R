@@ -20,3 +20,7 @@ library(retention)
 ls('package:retention')
 check("retention")
 
+vignette('RetentionNEAIR')
+data(students)
+data(graduates)
+

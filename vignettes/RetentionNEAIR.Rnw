@@ -1,0 +1,4 @@
+%\VignetteIndexEntry{Measuring All Students: An Alternative Method for Retention and Completion Rates}
+\documentclass{article}
+\begin{document}
+\end{document}
