@@ -10,7 +10,7 @@
   \item{students}{data frame containing all the student
   information.}
 
-  \item{graduates}{data frame containing all graduate
+  \item{grads}{data frame containing all graduate
   information.}
 
   \item{warehouseDateColumn}{the name of the column

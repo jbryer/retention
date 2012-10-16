@@ -6,7 +6,8 @@
     align = NULL, digits = NULL, display = NULL,
     sparkline.retention.rect = NULL,
     sparkline.completion.rect = NULL, sparkline.width = 10,
-    sparkline.height = NULL, completion.month = 48,
+    sparkline.height = NULL, retentionMonths = c(15),
+    completionMonths = c(36, 48, 72, 96),
     min.cell.size = 20, ...)
 }
 \description{

@@ -4,7 +4,8 @@
 \usage{
   xtable.Retention(x, caption = NULL, label = NULL,
     align = NULL, digits = NULL, display = NULL,
-    months = c(15, 36, 48, 72, 96), ...)
+    retentionMonths = c(15),
+    completionMonths = c(36, 48, 72, 96), ...)
 }
 \arguments{
   \item{x}{an R object of type CohortRetention.}
