@@ -20,6 +20,7 @@ library(retention)
 ls('package:retention')
 check("retention")
 
+demo(package='retention')
 vignette('RetentionNEAIR')
 data(students)
 data(graduates)
