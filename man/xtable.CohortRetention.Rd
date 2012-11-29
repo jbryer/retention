@@ -13,4 +13,9 @@
 \description{
   Prints LaTeX of cohort summary.
 }
+\seealso{
+  xtable
+
+  print.xtable
+}
 

@@ -27,4 +27,9 @@
 \description{
   Prints LaTeX of CohortRetention summary.
 }
+\seealso{
+  xtable
+
+  print.xtable
+}
 

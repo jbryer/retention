@@ -6,6 +6,20 @@
     warehouseDateColumn = "CREATED_DATE",
     gradColumn = "START_DATE", ...)
 }
+\arguments{
+  \item{students}{a data frame of enrolled students. This
+  data frame should be structured like a warehouse data
+  where a student is represented for each cohort (i.e.
+  warehouseDateColumn) in which they are enrolled.}
+
+  \item{warehouseDateColumn}{the name of the column
+  corresponding to the warehouse date, or cohort. Each
+  unique date will thereby define a cohort.}
+
+  \item{gradColumn}{the name of the column in the
+  \code{graduates} data frame corresponding to the
+  graduation date.}
+}
 \description{
   Returns student status at the specified months
 }

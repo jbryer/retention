@@ -1,0 +1,25 @@
+\name{plot.RetentionOverall}
+\alias{plot.RetentionOverall}
+\title{Plots a time series for retention and completion rates.}
+\usage{
+  plot.RetentionOverall(ret, retentionMonths = c(15),
+    completionMonths = c(36, 48, 72, 96),
+    legend.position = "none", ...)
+}
+\arguments{
+  \item{ret}{the results from \code{\link{retention}}.}
+
+  \item{retentionMonths}{the months to label for the
+  retention rates.}
+
+  \item{completionMonths}{the months to label for
+  completion rates.}
+
+  \item{legend.position}{position of the legend.}
+
+  \item{...}{currently unused.}
+}
+\description{
+  Plots a time series for retention and completion rates.
+}
+

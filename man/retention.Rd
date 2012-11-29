@@ -3,25 +3,44 @@
 \title{Estimates retention.}
 \usage{
   retention(students, grads,
+    studentIdColumn = "CONTACT_ID_SEQ",
+    degreeColumn = "DEGREE_CODE",
+    persistColumn = "PERSIST_FLAG",
     warehouseDateColumn = "CREATED_DATE",
     gradColumn = "START_DATE", grouping = NULL, ...)
 }
 \arguments{
-  \item{students}{data frame containing all the student
-  information.}
-
-  \item{grads}{data frame containing all graduate
-  information.}
-
-  \item{warehouseDateColumn}{the name of the column
-  representing the date the record was recorded. This is
-  the basis for defining cohorts.}
-
-  \item{the}{name of the grouping column if rates by a
-  group are desired.}
-
   \item{...}{other parameters passed to
   \link{cohortRetention} function.}
+
+  \item{students}{a data frame of enrolled students. This
+  data frame should be structured like a warehouse data
+  where a student is represented for each cohort (i.e.
+  warehouseDateColumn) in which they are enrolled.}
+
+  \item{studentIdColumn}{the name of the column
+  corresponding the student's id.}
+
+  \item{degreeColumn}{(optional) the name of the column
+  corresponding to the degree the student is enrolled in
+  (within students) or graduated (within graduates).  If
+  omitted, then \code{Transferred} and \code{Graduated
+  Other} levels in the returned \code{Status} variable will
+  have no values set.}
+
+  \item{persistColumn}{(optional) the name of the column
+  correspondinng to whether the student is persisting
+  within that month or not. If omitted, the
+  \code{Persisting} column will not be present in the
+  returned data frame. The column must be \code{logical}.}
+
+  \item{warehouseDateColumn}{the name of the column
+  corresponding to the warehouse date, or cohort. Each
+  unique date will thereby define a cohort.}
+
+  \item{gradColumn}{the name of the column in the
+  \code{graduates} data frame corresponding to the
+  graduation date.}
 }
 \description{
   Estimates retention.

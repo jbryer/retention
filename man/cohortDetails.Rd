@@ -10,6 +10,42 @@ Estimates cohort retention.}
     warehouseDateColumn = "CREATED_DATE",
     gradColumn = "START_DATE", min.cell.size = 5)
 }
+\arguments{
+  \item{students}{a data frame of enrolled students. This
+  data frame should be structured like a warehouse data
+  where a student is represented for each cohort (i.e.
+  warehouseDateColumn) in which they are enrolled.}
+
+  \item{graduates}{a data frame of graduates, or degrees
+  earned.}
+
+  \item{studentIdColumn}{the name of the column
+  corresponding the student's id.}
+
+  \item{degreeColumn}{(optional) the name of the column
+  corresponding to the degree the student is enrolled in
+  (within students) or graduated (within graduates).  If
+  omitted, then \code{Transferred} and \code{Graduated
+  Other} levels in the returned \code{Status} variable will
+  have no values set.}
+
+  \item{persistColumn}{(optional) the name of the column
+  correspondinng to whether the student is persisting
+  within that month or not. If omitted, the
+  \code{Persisting} column will not be present in the
+  returned data frame. The column must be \code{logical}.}
+
+  \item{warehouseDateColumn}{the name of the column
+  corresponding to the warehouse date, or cohort. Each
+  unique date will thereby define a cohort.}
+
+  \item{gradColumn}{the name of the column in the
+  \code{graduates} data frame corresponding to the
+  graduation date.}
+
+  \item{min.cell.size}{the minimum cell size to return a
+  rate.}
+}
 \description{
   Internal method. Estimates cohort retention.
 }
