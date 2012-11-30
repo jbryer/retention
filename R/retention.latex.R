@@ -1,5 +1,3 @@
-
-
 #' Prints LaTeX of a quarterly aggregate.
 #' 
 #' @export

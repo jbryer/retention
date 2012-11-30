@@ -7,6 +7,8 @@
 #' @param digits the number of digits to display.
 #' @param display currently ignored.
 #' @param ... other parameters passed to xtable and print.xtable.
+#' @seealso xtable
+#' @seealso print.xtable
 #' @export
 xtable.Retention <- function(x, caption=NULL, label=NULL, align=NULL, digits=NULL,
 								   display=NULL, 

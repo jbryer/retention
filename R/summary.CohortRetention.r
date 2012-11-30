@@ -1,4 +1,7 @@
+#' Prints summary of \code{\link{cohortRetention}}.
 #' 
+#' @param months the months to include in the summary.
+#' @param ... currenlty unused.
 #' @export
 summary.CohortRetention <- function(object, 
 									months=c(15, 36, 48, 72, 96), 

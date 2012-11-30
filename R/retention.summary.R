@@ -2,7 +2,14 @@
 #' 
 #' @export
 fySummary <- function(ret, rows, grouping=NULL, rateCol='GraduationRate', firstMonth=7) {
-	for(i in c('GraduationRate','RetentionRate','PersistenceRate')) {
+	if(class(ret) == 'Retention') {
+		ret <- ret$Summary
+	}
+	
+	rateCols = c('GraduationRate','RetentionRate','PersistenceRate')
+	rateCols = rateCols[rateCols %in% names(ret)]
+	
+	for(i in rateCols) {
 		r = which(is.nan(ret[,i]) | is.na(ret[,i]))
 		if(length(rows) > 0) {
 			ret[r,i] = 0
@@ -29,7 +36,8 @@ fySummary <- function(ret, rows, grouping=NULL, rateCol='GraduationRate', firstM
 	
 	#Check only the most recent aggregated cohort. Previos years that may not
 	#have enough cohorts will show up once at least one month into the next year
-	t3 = aggregate(t$Cohort, by=bylist, length) #This data frame will check that we have at least 3 months in the cohort
+	t3 = aggregate(t$Cohort, by=bylist, length) 
+	#This data frame will check that we have at least 3 months in the cohort
 	if(ncol(t3) == 3) {
 		for(g in unique(t3[,2])) {
 			f = max(t3[which(t3[,2] == g),1])
@@ -66,7 +74,14 @@ fySummary <- function(ret, rows, grouping=NULL, rateCol='GraduationRate', firstM
 #' 
 #' @export
 quarterlySummary <- function(ret, rows, grouping=NULL, rateCol='GraduationRate', firstMonth=7) {
-	for(i in c('GraduationRate','RetentionRate','PersistenceRate')) {
+	if(class(ret) == 'Retention') {
+		ret <- ret$Summary
+	}
+	
+	rateCols = c('GraduationRate','RetentionRate','PersistenceRate')
+	rateCols = rateCols[rateCols %in% names(ret)]
+
+	for(i in rateCols) {
 		r = which(is.nan(ret[,i]) | is.na(ret[,i]))
 		if(length(rows) > 0) {
 			ret[r,i] = 0

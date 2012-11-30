@@ -1,4 +1,10 @@
-#'
+#' Plots a time series for retention and completion rates.
+#' 
+#' @param ret the results from \code{\link{retention}}.
+#' @param retentionMonths the months to label for the retention rates.
+#' @param completionMonths the months to label for completion rates. 
+#' @param legend.position position of the legend.
+#' @param ... currently unused.
 #' @export
 plot.RetentionOverall <- function(ret, 
 								  retentionMonths=c(15), 

@@ -1,4 +1,9 @@
-#'
+#' Plots the results of \code{\link{retention}} use \code{ggplot2}.
+#' 
+#' @param ret the results of \code{\link{retention}}.
+#' @param retentionMonths the months to label for the retention rates.
+#' @param completionMonths the months to label for completion rates. 
+#' @param ... currently unused.
 #' @export
 plot.Retention <- function(ret, 
 						   retentionMonths=c(15), 

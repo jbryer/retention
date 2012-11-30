@@ -1,5 +1,8 @@
 #' Prints summary information aggregated across cohorts.
 #' 
+#' @param retentionMonths the months to label for the retention rates.
+#' @param completionMonths the months to label for completion rates. 
+#' @param ... currently unused.
 #' @export
 summary.Retention <- function(object, 
 							  retentionMonths = c(15),

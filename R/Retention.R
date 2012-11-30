@@ -1,4 +1,6 @@
 #' Returns student status at the specified months
+#' 
+#' @inheritParams cohortDetails
 #' @export
 studentDetails <- function(students, grads, 
 						   months=c(15,24),
@@ -32,16 +34,17 @@ studentDetails <- function(students, grads,
 
 #' Estimates retention.
 #' 
-#' @param students data frame containing all the student information.
-#' @param grads data frame containing all graduate information.
-#' @param warehouseDateColumn the name of the column representing the date the
-#'        record was recorded. This is the basis for defining cohorts.
-#' @param the name of the grouping column if rates by a group are desired.
+#' @inheritParams cohortDetails
 #' @param ... other parameters passed to \link{cohortRetention} function.
 #' @seealso cohortRetention
 #' @export
-retention <- function(students, grads, warehouseDateColumn='CREATED_DATE', 
-					  gradColumn='START_DATE', grouping=NULL, ...) {
+retention <- function(students, grads, 
+					  studentIdColumn='CONTACT_ID_SEQ',
+					  degreeColumn='DEGREE_CODE',
+					  persistColumn='PERSIST_FLAG',
+					  warehouseDateColumn='CREATED_DATE', 
+					  gradColumn='START_DATE',
+					  grouping=NULL, ...) {
 	students = students[order(students[,warehouseDateColumn], na.last=FALSE),]
 	grads = grads[order(grads[,gradColumn], na.last=FALSE),]
 	
@@ -51,9 +54,13 @@ retention <- function(students, grads, warehouseDateColumn='CREATED_DATE',
     results <- list()
     for(i in length(cohorts):3) {
     	tryCatch( {
-	        result <- cohortRetention(students, grads, gradColumn=gradColumn,
-	        						 warehouseDateColumn=warehouseDateColumn, 
-	        						 grouping = grouping, ...)
+	        result <- cohortRetention(students, grads, 
+	        						  studentIdColumn=studentIdColumn,
+	        						  degreeColumn=degreeColumn,
+	        						  persistColumn=persistColumn,
+	        						  gradColumn=gradColumn,
+	        						  warehouseDateColumn=warehouseDateColumn, 
+	        						  grouping=grouping, ...)
 	        if(!is.null(result$Summary)) {
 	            results[[as.character(cohorts[i])]] = result$Summary
 	        }
@@ -67,6 +74,7 @@ retention <- function(students, grads, warehouseDateColumn='CREATED_DATE',
     						  "cohortRetention(students, grads, warehouseDateColumn='", 
     						      warehouseDateColumn, "', gradColumn='", gradColumn, 
     						      "', grouping='", grouping, "')\n", 
+    						  'Calling error: ', as.character(e),
     						  sep=''))
     		},
     		finally = {}
@@ -82,20 +90,23 @@ retention <- function(students, grads, warehouseDateColumn='CREATED_DATE',
         return(NULL)
     }
     
-	cols = c('Cohort', 'GraduationRate', 'RetentionRate', 'PersistenceRate', 
-			 'Enrollments', 'Graduated','Graduated Other','Still Enrolled','Transferred')
+	cols = c('Cohort', 'GraduationRate', 'RetentionRate', 'Enrollments', 
+			 'Graduated','Graduated Other','Still Enrolled','Transferred')
+	if(!is.null(persistColumn)) {
+		cols = c(cols, 'PersistenceRate')
+	}
 	if('Group' %in% names(results[[1]])) {
 		cols = c(cols, 'Group')
 	}
 	
 	long2 = results[[1]][,cols]
-	long2$Month = (mondf(as.Date(paste(long2$Cohort, '01', sep='-')), 
+	long2$Month = (retention:::mondf(as.Date(paste(long2$Cohort, '01', sep='-')), 
 						 as.Date(paste(names(results)[1], '01', sep='-')) ))
 	long2$Comparison = names(results)[1]
     for(i in 2:length(results)) {
     	if(nrow(results[[i]]) > 0 & ncol(results[[i]]) > 0) {
 	        l = results[[i]][,cols]
-			l$Month = (mondf(as.Date(paste(l$Cohort, '01', sep='-')), 
+			l$Month = (retention:::mondf(as.Date(paste(l$Cohort, '01', sep='-')), 
 							 as.Date(paste(names(results)[i], '01', sep='-')) ))
 			l$Comparison = names(results)[i]
 	    	long2 = rbind(long2, l)

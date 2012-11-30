@@ -1,6 +1,5 @@
 #' Functions to estimate and visualize retention and complete rates.
 #'
-#' 
 #' @name retention-package
 #' @aliases retention
 #' @docType package
@@ -34,10 +33,14 @@ NULL
 	pkgEnv = pos.to.env(match('package:retention', search()))
 }
 
+#' Calculates the difference in months between the two dates.
+#' 
+#' @param d1 date one. 
+#' @param d2 date two
 mondf <- function(d1, d2) { 
 	monnb <- function(d) { 
 		lt <- as.POSIXlt(as.Date(d, origin="1900-01-01"))
 		lt$year*12 + lt$mon
 	} 
-	monnb(d2) - monnb(d1)
+	return(abs(monnb(d2) - monnb(d1)))
 }

@@ -1,3 +1,5 @@
+require(retention)
+
 data(students)
 data(graduates)
 

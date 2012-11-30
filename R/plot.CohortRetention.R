@@ -1,4 +1,20 @@
-#'
+#' Plots the results of \code{\link{cohortRetention}} using \code{ggplot2}.
+#' 
+#' @param cohortRetention the results from \code{\link{cohortRetention}}.
+#' @param labelPoints if TRUE, points will be labeled.
+#' @param textsize the size of the text.
+#' @param reverse if TRUE, the x-axis is reversed so most recent cohort is on the left.
+#' @param title the plot title.
+#' @param xlab the x-axis title.
+#' @param ylab2 the y-axis title for the histogram of cohort sizes.
+#' @param ylab1 the y-axis title for the rates.
+#' @param legend.position the placement for the legend.
+#' @param legend.justification the legend justification.
+#' @param retentionMonths the months to label for the retention rates.
+#' @param completionMonths the months to label for completion rates. 
+#' @param plot.histogram if TRUE, a histogram will be included representing cohort sizes.
+#' @param useGridExtra if TRUE, layout options from the \code{GridExtra} package will be used.
+#' @param ... currently unused.
 #' @export
 plot.CohortRetention <- function(cohortRetention, 
 								labelPoints=FALSE, 

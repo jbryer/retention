@@ -1,5 +1,7 @@
 #' Prints LaTeX of cohort summary.
 #' 
+#' @seealso xtable
+#' @seealso print.xtable
 #' @export
 xtable.CohortRetention <- function(x, caption=NULL, label=NULL, align=NULL, digits=NULL,
 								   display=NULL,	

@@ -1,10 +1,13 @@
-#'
+#' Plots retention, completion, and persistence rates.
+#' 
+#' @param ret the results from \code{\link{retention}}.
 #' @export
-plotPersistence <- function(students, grads, summary=NULL) {
-	if(is.null(summary)) {
-		long2 = retention(students, grads)
+plotPersistence <- function(ret) {
+	long2 <- NULL
+	if(class(ret) == 'Retention') {
+		long2 <- ret$Summary
 	} else {
-		long2 = summary
+		long2 <- summary		
 	}
 	
 	wt = cast(long2, Month ~ Cohort, value='Enrollments')
