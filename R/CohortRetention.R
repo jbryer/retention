@@ -31,6 +31,8 @@ cohortDetails <- function(students, graduates,
 	# fix could be to rename the columns here before having to do the merge.
 	students = students[order(students[,warehouseDateColumn], na.last=FALSE),]
 	graduates = graduates[order(graduates[,gradColumn], na.last=FALSE),]
+	#keep only the first degree
+	graduates = graduates[!duplicated(graduates[,studentIdColumn]),] 
 	
 	firstWHDate = min(students[,warehouseDateColumn], na.rm=TRUE)
 	lastWHDate = max(students[,warehouseDateColumn], na.rm=TRUE)
