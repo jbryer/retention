@@ -183,20 +183,24 @@ cohortRetention <- function(students, graduates,
 		rownames(t) = 1:nrow(t)
 		
 		if(!is.null(persistColumn)) {
-			t2 = as.data.frame(table(s$Month, s$Persisting))
-			if(!('Var1' %in% names(t2) & 'Var2' %in% names(t2))) {
-				return(NULL)
+			if(all(is.na(s$Persisting))) {
+				PersistenceRate <- NA
+			} else {
+				t2 = as.data.frame(table(s$Month, s$Persisting))
+				if(!('Var1' %in% names(t2) & 'Var2' %in% names(t2))) {
+					return(NULL)
+				}
+				t2 = cast(t2, Var1 ~ Var2, value='Freq')
+				if(!'TRUE' %in% names(t2)) {
+					t2[,'TRUE'] = 0
+				}
+				if(!'FALSE' %in% names(t2)) {
+					t2[,'FALSE'] = 0
+				}
+				totals2 = apply(t2[,2:3], 1, sum)
+				t2[,2:3] = 100 * t2[,2:3] / totals2
+				PersistenceRate = t2[,'TRUE']
 			}
-			t2 = cast(t2, Var1 ~ Var2, value='Freq')
-			if(!'TRUE' %in% names(t2)) {
-				t2[,'TRUE'] = 0
-			}
-			if(!'FALSE' %in% names(t2)) {
-				t2[,'FALSE'] = 0
-			}
-			totals2 = apply(t2[,2:3], 1, sum)
-			t2[,2:3] = 100 * t2[,2:3] / totals2
-			PersistenceRate = t2[,'TRUE']
 		}
 		
 		if('Var1' %in% names(t) & 'Var2' %in% names(t)) {
