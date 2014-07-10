@@ -1,6 +1,7 @@
 #' Alternative (and possibly faster) retention calculation.
 #' 
-#' 
+#' @inheritParams retention
+#' @inheritParams cohortRetention
 #' @export
 retention2 <- function(students, graduates, 
 					   months=c(15,24,36,48,72,96),
@@ -56,19 +57,19 @@ retention2 <- function(students, graduates,
 	names(grads)[2] <- 'DegreeAtGraduation'
 	
 	results <- firstTime
-	#results$MonthsEnrolled <- diff.month(results$Cohort, max(firstTime$Cohort))
+	results$MonthsEnrolled <- diff.month(results$Cohort, max(firstTime$Cohort))
 	results <- merge(results, grads, by=studentIdColumn, all.x=TRUE)
 	
 	results[,persistColumn] <- NULL
 	#results[,warehouseDateColumn] <- NULL
 	
+	ot.merged <- merge(otherTime, 
+				firstTime[,c(studentIdColumn,'Cohort',degreeColumn,persistColumn)], 
+				by=studentIdColumn, all.x=TRUE)
+	ot.merged$MonthDiff <- diff.month(ot.merged$Cohort.x, ot.merged$Cohort.y)
 	
 	for(m in months) {
-		ot <- merge(otherTime, 
-					firstTime[,c(studentIdColumn,'Cohort',degreeColumn,persistColumn)], 
-					by=studentIdColumn, all.x=TRUE)
-		ot$MonthDiff <- diff.month(ot$Cohort.x, ot$Cohort.y)
-		ot <- ot[ot$MonthDiff == m,]
+		ot <- ot.merged[ot.merged$MonthDiff == m,]
 		ot$Transfer <- ot$CurrentDegree == ot[,degreeColumn]
 		
 		status <- rep('Withdrawn', nrow(results))
@@ -87,6 +88,7 @@ retention2 <- function(students, graduates,
 		results[,paste0('Status', m)] <- status
 	}
 	
+	class(results) <- c('retention2', 'data.frame')
 	return(results)
 }
 
