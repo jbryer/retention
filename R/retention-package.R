@@ -37,7 +37,8 @@ NULL
 #' 
 #' @param d1 date one. 
 #' @param d2 date two
-mondf <- function(d1, d2) { 
+#' @export
+diff.month <- function(d1, d2) { 
 	monnb <- function(d) { 
 		lt <- as.POSIXlt(as.Date(d, origin="1900-01-01"))
 		lt$year*12 + lt$mon

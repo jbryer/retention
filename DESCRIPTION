@@ -17,18 +17,3 @@ Depends:
     psych,
     reshape,
     grid
-Collate:
-    'Retention.R'
-    'plot.CohortRetention.R'
-    'plot.Persistence.R'
-    'plot.Retention.R'
-    'plot.RetentionOverall.R'
-    'retention.latex.R'
-    'retention.summary.R'
-    'retention-package.R'
-    'CohortRetention.R'
-    'align.R'
-    'summary.CohortRetention.r'
-    'summary.retention.r'
-    'xtable.CohortRetention.R'
-    'xtable.Retention.R'

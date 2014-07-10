@@ -100,14 +100,14 @@ retention <- function(students, grads,
 	}
 	
 	long2 = results[[1]][,cols]
-	long2$Month = (retention:::mondf(as.Date(paste(long2$Cohort, '01', sep='-')), 
-						 as.Date(paste(names(results)[1], '01', sep='-')) ))
+	long2$Month = diff.month(as.Date(paste(long2$Cohort, '01', sep='-')), 
+						 as.Date(paste(names(results)[1], '01', sep='-')) )
 	long2$Comparison = names(results)[1]
     for(i in 2:length(results)) {
     	if(nrow(results[[i]]) > 0 & ncol(results[[i]]) > 0) {
 	        l = results[[i]][,cols]
-			l$Month = (retention:::mondf(as.Date(paste(l$Cohort, '01', sep='-')), 
-							 as.Date(paste(names(results)[i], '01', sep='-')) ))
+			l$Month = diff.month(as.Date(paste(l$Cohort, '01', sep='-')), 
+							 as.Date(paste(names(results)[i], '01', sep='-')) )
 			l$Comparison = names(results)[i]
 	    	long2 = rbind(long2, l)
     	}

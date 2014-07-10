@@ -132,7 +132,7 @@ cohortDetails <- function(students, graduates,
 	
 	students$Month = as.factor(format(students[,warehouseDateColumn], format='%Y-%m'))
 	
-	students$Months = (retention:::mondf(students[,warehouseDateColumn], lastWHDate))
+	students$Months = diff.month(students[,warehouseDateColumn], lastWHDate)
 	
 	return(students)
 }
@@ -238,7 +238,7 @@ cohortRetention <- function(students, graduates,
 		}
 	}
 	
-	results$Month = retention:::mondf(as.Date(paste(results$Cohort, '-01', sep='')), 
+	results$Month = diff.month(as.Date(paste(results$Cohort, '-01', sep='')), 
 						  as.Date(cr$ComparisonCohort))
 	cr$Summary = results
 	class(cr) = "CohortRetention"

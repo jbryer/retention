@@ -1,6 +1,3 @@
-install.packages(c('devtools', 'roxygen2', 'RSQLite', 'ipeds'), 
-		repos=c('http://cran.r-project.org', 'http://r-forge.r-project.org'))
-
 require(devtools)
 require(roxygen2)
 
