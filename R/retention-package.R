@@ -45,3 +45,10 @@ diff.month <- function(d1, d2) {
 	} 
 	return(abs(monnb(d2) - monnb(d1)))
 }
+
+#' Depcreated function
+#' @inheritParams diff.month
+mondf <- function(d1, d2) {
+	warning("This function is deprecated. Use diff.month instead!!!")
+	return(diff.month(d1, d2))
+}
