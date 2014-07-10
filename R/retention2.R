@@ -14,8 +14,8 @@ retention2 <- function(students, graduates,
 	std <- students
 	grads <- graduates
 	
-	std$Cohort <- format(std[,warehouseDateColumn], '%Y-%m')
-	grads$MonthGraduated <- format(grads[,gradColumn], '%Y-%m')
+	std$Cohort <- format(std[,warehouseDateColumn], '%Y-%m-01')
+	grads$MonthGraduated <- format(grads[,gradColumn], '%Y-%m-01')
 	
 	std <- std[order(std$Cohort, na.last=FALSE),]
 	grads <- grads[order(grads$MonthGraduated, na.last=FALSE),]
@@ -32,15 +32,15 @@ retention2 <- function(students, graduates,
 	otherTime <- otherTime[-which(otherTime[,studentIdColumn] %in% preIds),]
 	grads <- grads[-which(grads[,studentIdColumn] %in% preIds),]
 	
-	firstTime$Cohort <- as.Date(paste0(firstTime$Cohort, '-01'))
-	otherTime$Cohort <- as.Date(paste0(otherTime$Cohort, '-01'))
+	firstTime$Cohort <- as.Date(firstTime$Cohort)
+	otherTime$Cohort <- as.Date(otherTime$Cohort)
 	
 	grads <- grads[!duplicated(grads[,studentIdColumn]),]
 	grads <- merge(grads, firstTime[,c(studentIdColumn, 'Cohort')],
 				   by=studentIdColumn, all.x=TRUE)
 	grads <- grads[!is.na(grads$Cohort),]
 	grads$MonthGraduated <- as.Date(paste0(grads$MonthGraduated, '-01'))
-	grads$MonthsToGrad <- diff.month(grads$MonthGraduated, paste0(grads$Cohort, '-01'))
+	grads$MonthsToGrad <- diff.month(grads$MonthGraduated, grads$Cohort)
 	
 	#TODO: look at student 24601, their 1992 enrollment does not appear in students data frame
 	#HACK!!!
