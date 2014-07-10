@@ -28,9 +28,10 @@ retention2 <- function(students, graduates,
 	
 	#Drop students before 2002
 	preIds <- unique(firstTime[is.na(firstTime$Cohort),studentIdColumn])
-	firstTime <- firstTime[-which(firstTime[,studentIdColumn] %in% preIds),]
-	otherTime <- otherTime[-which(otherTime[,studentIdColumn] %in% preIds),]
-	grads <- grads[-which(grads[,studentIdColumn] %in% preIds),]
+	if(length(preIds) > 0){
+		firstTime <- firstTime[-which(firstTime[,studentIdColumn] %in% preIds),]
+		otherTime <- otherTime[-which(otherTime[,studentIdColumn] %in% preIds),]
+		grads <- grads[-which(grads[,studentIdColumn] %in% preIds),]}
 	
 	firstTime$Cohort <- as.Date(firstTime$Cohort)
 	otherTime$Cohort <- as.Date(otherTime$Cohort)
