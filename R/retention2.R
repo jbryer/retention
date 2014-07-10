@@ -40,7 +40,7 @@ retention2 <- function(students, graduates,
 				   by=studentIdColumn, all.x=TRUE)
 	grads <- grads[!is.na(grads$Cohort),]
 	grads$MonthGraduated <- as.Date(paste0(grads$MonthGraduated, '-01'))
-	grads$MonthsToGrad <- diff.month(grads$MonthGraduated, grads$Cohort)
+	grads$MonthsToGrad <- diff.month(grads$MonthGraduated, paste0(grads$Cohort, '-01'))
 	
 	#TODO: look at student 24601, their 1992 enrollment does not appear in students data frame
 	#HACK!!!
