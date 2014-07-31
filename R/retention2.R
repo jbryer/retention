@@ -70,7 +70,7 @@ retention2 <- function(students, graduates,
 	
 	for(m in months) {
 		ot <- ot.merged[ot.merged$MonthDiff == m,]
-		ot$Transfer <- ot$CurrentDegree == ot[,degreeColumn]
+		ot$Transfer <- ot$CurrentDegree != ot[,degreeColumn]
 		
 		status <- rep('Withdrawn', nrow(results))
 		status[which(results[,studentIdColumn] %in% 
