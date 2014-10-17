@@ -57,7 +57,7 @@ plot.CohortRetention <- function(cohortRetention,
 	#Bottom part of the plot
 	plot1 = ggplot(t, aes(x=Cohort, y=value), stat='identity') + 
 		geom_bar(aes(fill=variable), alpha=.5) + 
-		opts(axis.text.x=theme_text(angle=-90, size=unit(8,'points'), hjust=0)) + 
+		theme(axis.text.x=theme_text(angle=-90, size=unit(8,'points'), hjust=0)) + 
 		xlab(xlab) + ylab(ylab1) + 
 		scale_fill_manual(paste('Status as of', lastWHDate), 
 						  values=c('Withdrawn'='pink', 
@@ -65,7 +65,7 @@ plot.CohortRetention <- function(cohortRetention,
 						  		 'Still Enrolled'='green', 
 						  		 'Graduated Other'='lightblue', 
 						  		 'Graduated'='blue')) + 
-		opts(legend.key.width=unit(.2,"cm"), 
+		theme(legend.key.width=unit(.2,"cm"), 
 			 legend.text=theme_text(size=8), 
 			 legend.title=theme_text(size=9,hjust=0), 
 			 legend.position=legend.position, 
@@ -127,15 +127,15 @@ plot.CohortRetention <- function(cohortRetention,
 		df2 = results[,c('Cohort', 'Enrollments')]
 		plot2 = ggplot(df2, aes(x=Cohort, y=Enrollments), stat='identity') + 
 			geom_bar(colour='grey', fill='grey', alpha=.7) + 
-			#opts(axis.text.x=theme_text(angle=-90, size=unit(8,'points'), hjust=0)) + 
-			opts(axis.ticks=theme_blank(), axis.text.x=theme_blank()) + 
+			#theme(axis.text.x=theme_text(angle=-90, size=unit(8,'points'), hjust=0)) + 
+			theme(axis.ticks=theme_blank(), axis.text.x=theme_blank()) + 
 			geom_text(aes(label=Enrollments), angle=-90, vjust=.5, hjust=-.1, size=textsize) + 
 			ylab(ylab2) + xlab(NULL)
 		
 		if(reverse) { plot2 = plot2 + xlim(rev(levels(df2$Cohort))) }
 	}
 	
-	plot1 = plot1 + opts(panel.background=theme_blank(), 
+	plot1 = plot1 + theme(panel.background=theme_blank(), 
 				 panel.grid.major=theme_blank(), 
 				 panel.border=theme_blank())
 	
@@ -148,7 +148,7 @@ plot.CohortRetention <- function(cohortRetention,
 			pushViewport( viewport( layout=grid_layout ) )
 			retention:::align.plots(grid_layout, 
 						list(plot2, 1, 1), 
-						list(plot1 + opts(legend.position='none'), 2, 1))
+						list(plot1 + theme(legend.position='none'), 2, 1))
 		} else {
 			empty <- plyr::empty
 			Layout <- grid.layout(nrow = 2, ncol = 1)
@@ -159,12 +159,12 @@ plot.CohortRetention <- function(cohortRetention,
 			subplot <- function(x, y) { viewport(layout.pos.row = x, layout.pos.col = y) }
 			mplot <- function(p1, p2) {
 				vplayout()
-				print(p2 + opts(main=title), vp = subplot(1, 1))
+				print(p2 + theme(main=title), vp = subplot(1, 1))
 				print(p1, vp = subplot(2, 1))
 			}
 			
-			mplot(plot1 + opts(plot.margin=unit(c(-10,.5,0,.3), "lines")), plot2 + 
-				opts(plot.margin=unit(c(0,0,9,0), "lines")))
+			mplot(plot1 + theme(plot.margin=unit(c(-10,.5,0,.3), "lines")), plot2 + 
+				theme(plot.margin=unit(c(0,0,9,0), "lines")))
 		}
 	} else {
 		return(plot1)

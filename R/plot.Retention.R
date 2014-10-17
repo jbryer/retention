@@ -30,7 +30,7 @@ plot.Retention <- function(ret,
 			geom_histogram(data=grt, aes(x=x, y=y), colour='grey', alpha=.2, stat='identity') +
 			geom_path(aes(y=RetentionRate, colour=Cohort), alpha=.3) + 
 			geom_path(aes(y=GraduationRate, colour=Cohort), linetype=2, alpha=.3) +
-			opts(legend.position='none')
+			theme(legend.position='none')
 	} else {
 		for(g in unique(long2$Group)) {
 			l = long2[which(long2$Group == g),]

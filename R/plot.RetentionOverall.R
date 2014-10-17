@@ -35,7 +35,7 @@ plot.RetentionOverall <- function(ret,
 		geom_path(aes(y=PersistenceRate2), colour='black', stat='identity', linetype=2) +
 		ylim(c(0,100)) +
 		scale_fill_manual('', values=c('Completed'='blue', 'Inactive'='yellow', 'Active'='green')) +
-		opts(legend.position=legend.position) + 
+		theme(legend.position=legend.position) + 
 		xlab('Months Since Enrollment') + ylab('Percentage') 
 	
 	if(!is.null(retentionMonths)) {
