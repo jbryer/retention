@@ -57,7 +57,7 @@ plot.CohortRetention <- function(cohortRetention,
 	#Bottom part of the plot
 	plot1 = ggplot(t, aes(x=Cohort, y=value), stat='identity') + 
 		geom_bar(aes(fill=variable), alpha=.5) + 
-		theme(axis.text.x=theme_text(angle=-90, size=unit(8,'points'), hjust=0)) + 
+		theme(axis.text.x=element_text(angle=-90, size=unit(8,'points'), hjust=0)) +
 		xlab(xlab) + ylab(ylab1) + 
 		scale_fill_manual(paste('Status as of', lastWHDate), 
 						  values=c('Withdrawn'='pink', 
@@ -66,11 +66,11 @@ plot.CohortRetention <- function(cohortRetention,
 						  		 'Graduated Other'='lightblue', 
 						  		 'Graduated'='blue')) + 
 		theme(legend.key.width=unit(.2,"cm"), 
-			 legend.text=theme_text(size=8), 
-			 legend.title=theme_text(size=9,hjust=0), 
+			 legend.text=element_text(size=8),
+			 legend.title=element_text(size=9,hjust=0),
 			 legend.position=legend.position, 
 			 legend.justification=legend.justification, 
-			 legend.background=theme_rect(colour='white', fill='white')) +
+			 legend.background=element_rect(colour='white', fill='white')) +
 		geom_path(data=df, aes(x=Cohort, y=GraduationRate, group=1), 
 				  fill=NULL, label=NULL, colour='blue', stat='identity') + 
 		geom_path(data=df, aes(x=Cohort, y=RetentionRate, group=1), 
@@ -127,17 +127,17 @@ plot.CohortRetention <- function(cohortRetention,
 		df2 = results[,c('Cohort', 'Enrollments')]
 		plot2 = ggplot(df2, aes(x=Cohort, y=Enrollments), stat='identity') + 
 			geom_bar(colour='grey', fill='grey', alpha=.7) + 
-			#theme(axis.text.x=theme_text(angle=-90, size=unit(8,'points'), hjust=0)) + 
-			theme(axis.ticks=theme_blank(), axis.text.x=theme_blank()) + 
+			#theme(axis.text.x=element_text(angle=-90, size=unit(8,'points'), hjust=0)) +
+			theme(axis.ticks=element_blank(), axis.text.x=element_blank()) +
 			geom_text(aes(label=Enrollments), angle=-90, vjust=.5, hjust=-.1, size=textsize) + 
 			ylab(ylab2) + xlab(NULL)
 		
 		if(reverse) { plot2 = plot2 + xlim(rev(levels(df2$Cohort))) }
 	}
 	
-	plot1 = plot1 + theme(panel.background=theme_blank(), 
-				 panel.grid.major=theme_blank(), 
-				 panel.border=theme_blank())
+	plot1 = plot1 + theme(panel.background=element_blank(),
+				 panel.grid.major=element_blank(),
+				 panel.border=element_blank())
 	
 	if(plot.histogram) {
 		if(useGridExtra) {
