@@ -14,8 +14,8 @@ retention2 <- function(students, graduates,
 	std <- students
 	grads <- graduates
 	
-	std$Cohort <- format(std[,warehouseDateColumn], '%Y-%m')
-	grads$MonthGraduated <- format(grads[,gradColumn], '%Y-%m')
+	std$Cohort <- format(std[,warehouseDateColumn], '%Y-%m-01')
+	grads$MonthGraduated <- format(grads[,gradColumn], '%Y-%m-01')
 	
 	std <- std[order(std$Cohort, na.last=FALSE),]
 	grads <- grads[order(grads$MonthGraduated, na.last=FALSE),]
@@ -28,12 +28,13 @@ retention2 <- function(students, graduates,
 	
 	#Drop students before 2002
 	preIds <- unique(firstTime[is.na(firstTime$Cohort),studentIdColumn])
-	firstTime <- firstTime[-which(firstTime[,studentIdColumn] %in% preIds),]
-	otherTime <- otherTime[-which(otherTime[,studentIdColumn] %in% preIds),]
-	grads <- grads[-which(grads[,studentIdColumn] %in% preIds),]
+	if(length(preIds) > 0){
+		firstTime <- firstTime[-which(firstTime[,studentIdColumn] %in% preIds),]
+		otherTime <- otherTime[-which(otherTime[,studentIdColumn] %in% preIds),]
+		grads <- grads[-which(grads[,studentIdColumn] %in% preIds),]}
 	
-	firstTime$Cohort <- as.Date(paste0(firstTime$Cohort, '-01'))
-	otherTime$Cohort <- as.Date(paste0(otherTime$Cohort, '-01'))
+	firstTime$Cohort <- as.Date(firstTime$Cohort)
+	otherTime$Cohort <- as.Date(otherTime$Cohort)
 	
 	grads <- grads[!duplicated(grads[,studentIdColumn]),]
 	grads <- merge(grads, firstTime[,c(studentIdColumn, 'Cohort')],
