@@ -55,8 +55,8 @@ plot.CohortRetention <- function(cohortRetention,
 	df = results[,c('Cohort', 'GraduationRate', 'RetentionRate')]
 	
 	#Bottom part of the plot
-	plot1 = ggplot(t, aes(x=Cohort, y=value), stat='identity') + 
-		geom_bar(aes(fill=variable), alpha=.5) + 
+	plot1 = ggplot(t, aes(x=Cohort, y=value)) +
+		geom_bar(aes(fill=variable), alpha=.5, stat='identity') +
 		theme(axis.text.x=element_text(angle=-90, size=unit(8,'points'), hjust=0)) +
 		xlab(xlab) + ylab(ylab1) + 
 		scale_fill_manual(paste('Status as of', lastWHDate), 
@@ -125,8 +125,8 @@ plot.CohortRetention <- function(cohortRetention,
 	#Top part of the graph (histogram of new enrollments)
 	if(plot.histogram) {
 		df2 = results[,c('Cohort', 'Enrollments')]
-		plot2 = ggplot(df2, aes(x=Cohort, y=Enrollments), stat='identity') + 
-			geom_bar(colour='grey', fill='grey', alpha=.7) + 
+		plot2 = ggplot(df2, aes(x=Cohort, y=Enrollments)) +
+			geom_bar(colour='grey', fill='grey', alpha=.7, stat='identity') +
 			#theme(axis.text.x=element_text(angle=-90, size=unit(8,'points'), hjust=0)) +
 			theme(axis.ticks=element_blank(), axis.text.x=element_blank()) +
 			geom_text(aes(label=Enrollments), angle=-90, vjust=.5, hjust=-.1, size=textsize) + 
