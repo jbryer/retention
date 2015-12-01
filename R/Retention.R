@@ -41,7 +41,7 @@ studentDetails <- function(students, grads,
 retention <- function(students, grads, 
 					  studentIdColumn='CONTACT_ID_SEQ',
 					  degreeColumn='DEGREE_CODE',
-					  persistColumn='PERSIST_FLAG',
+					  persistColumn='Persist',
 					  warehouseDateColumn='CREATED_DATE', 
 					  gradColumn='START_DATE',
 					  grouping=NULL, ...) {
