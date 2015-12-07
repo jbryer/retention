@@ -49,47 +49,49 @@ retention <- function(students, grads,
 	grads = grads[order(grads[,gradColumn], na.last=FALSE),]
 	
 	cohorts = unique(students[!is.na(students[,warehouseDateColumn]),warehouseDateColumn])
-    cohorts = cohorts[order(cohorts, decreasing=FALSE)]
+	cohorts = cohorts[order(cohorts, decreasing=FALSE)]
 	
-    results <- list()
-    for(i in length(cohorts):3) {
-    	tryCatch( {
-	        result <- cohortRetention(students, grads, 
-	        						  studentIdColumn=studentIdColumn,
-	        						  degreeColumn=degreeColumn,
-	        						  persistColumn=persistColumn,
-	        						  gradColumn=gradColumn,
-	        						  warehouseDateColumn=warehouseDateColumn, 
-	        						  grouping=grouping, ...)
-	        if(!is.null(result$Summary)) {
-	            results[[as.character(cohorts[i])]] = result$Summary
-	        }
-	        },
-    		error = function(e) { 
-    			warning(paste('Error calculating cohort retention with ',
-    						   cohorts[i], ' reference cohort. Results will not ',
-    						  'be included. Try the following to debug further:\n',
-    						  "students <- students[students$", warehouseDateColumn, 
-    						      " <= as.Date('", cohorts[i], "'),]\n",
-    						  "cohortRetention(students, grads, warehouseDateColumn='", 
-    						      warehouseDateColumn, "', gradColumn='", gradColumn, 
-    						      "', grouping='", grouping, "')\n", 
-    						  'Calling error: ', as.character(e),
-    						  sep=''))
-    		},
-    		finally = {}
-    	)
-	        
-        remove = -which(students[,warehouseDateColumn] == cohorts[i])
-        if(length(remove) > 0) {
-            students = students[remove,]
-        }
-    }
-    
-    if(length(results) == 0) {
-        return(NULL)
-    }
-    
+	results <- list()
+	CohortsRaw <- list()
+	for(i in length(cohorts):3) {
+		tryCatch( {
+			result <- cohortRetention(students, grads, 
+									  studentIdColumn=studentIdColumn,
+									  degreeColumn=degreeColumn,
+									  persistColumn=persistColumn,
+									  gradColumn=gradColumn,
+									  warehouseDateColumn=warehouseDateColumn, 
+									  grouping=grouping, ...)
+			if(!is.null(result$Summary)) {
+				results[[as.character(cohorts[i])]] = result$Summary
+				CohortsRaw[[as.character(cohorts[i])]] <- result
+			}
+		},
+		error = function(e) { 
+			warning(paste('Error calculating cohort retention with ',
+						  cohorts[i], ' reference cohort. Results will not ',
+						  'be included. Try the following to debug further:\n',
+						  "students <- students[students$", warehouseDateColumn, 
+						  " <= as.Date('", cohorts[i], "'),]\n",
+						  "cohortRetention(students, grads, warehouseDateColumn='", 
+						  warehouseDateColumn, "', gradColumn='", gradColumn, 
+						  "', grouping='", grouping, "')\n", 
+						  'Calling error: ', as.character(e),
+						  sep=''))
+		},
+		finally = {}
+		)
+		
+		remove = -which(students[,warehouseDateColumn] == cohorts[i])
+		if(length(remove) > 0) {
+			students = students[remove,]
+		}
+	}
+	
+	if(length(results) == 0) {
+		return(NULL)
+	}
+	
 	cols = c('Cohort', 'GraduationRate', 'RetentionRate', 'Enrollments', 
 			 'Graduated','Graduated Other','Still Enrolled','Transferred')
 	if(!is.null(persistColumn)) {
@@ -101,26 +103,27 @@ retention <- function(students, grads,
 	
 	long2 = results[[1]][,cols]
 	long2$Month = diff.month(as.Date(paste(long2$Cohort, '01', sep='-')), 
-						 as.Date(paste(names(results)[1], '01', sep='-')) )
+							 as.Date(paste(names(results)[1], '01', sep='-')) )
 	long2$Comparison = names(results)[1]
-    for(i in 2:length(results)) {
-    	if(nrow(results[[i]]) > 0 & ncol(results[[i]]) > 0) {
-	        l = results[[i]][,cols]
+	for(i in 2:length(results)) {
+		if(nrow(results[[i]]) > 0 & ncol(results[[i]]) > 0) {
+			l = results[[i]][,cols]
 			l$Month = diff.month(as.Date(paste(l$Cohort, '01', sep='-')), 
-							 as.Date(paste(names(results)[i], '01', sep='-')) )
+								 as.Date(paste(names(results)[i], '01', sep='-')) )
 			l$Comparison = names(results)[i]
-	    	long2 = rbind(long2, l)
-    	}
-    }
-    
-    ret = list()
-    ret[['Summary']] = long2
-    ret[['Students']] = students
-    ret[['Graduates']] = grads
-    ret[['WarehouseDateColumn']] = warehouseDateColumn
-    ret[['Cohorts']] = results
-	ret[['grouping']] = grouping
+			long2 = rbind(long2, l)
+		}
+	}
 	
-    class(ret) = 'Retention'
-    return(ret)
+	ret = list()
+	ret[['Summary']] = long2
+	ret[['Students']] = students
+	ret[['Graduates']] = grads
+	ret[['WarehouseDateColumn']] = warehouseDateColumn
+	ret[['Cohorts']] = results
+	ret[['grouping']] = grouping
+	ret[['CohortsRaw']] <- CohortsRaw
+	
+	class(ret) = 'Retention'
+	return(ret)
 }
