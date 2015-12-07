@@ -68,7 +68,7 @@ cohortDetails <- function(students, graduates,
 	#matches only on CONTACT_ID_SEQ)
 	students$Graduated = FALSE
 	gr = !is.na(students[,gradColumn]) & !is.na(students[,warehouseDateColumn]) & 
-					students[,gradColumn] >= students[,warehouseDateColumn]
+		students[,gradColumn] >= students[,warehouseDateColumn]
 	gr[is.na(gr)] = FALSE #TODO: How are the NAs?s
 	if(nrow(students[gr,]) > 0) {
 		students[gr,]$Graduated = TRUE
@@ -98,12 +98,12 @@ cohortDetails <- function(students, graduates,
 	}
 	#Create the status variable that we will plot with
 	students$Status = factor('Withdrawn', levels=c('Graduated', 'Graduated Other', 
-									'Still Enrolled', 'Transferred', 'Withdrawn' ))
+												   'Still Enrolled', 'Transferred', 'Withdrawn' ))
 	if(length(which(students$StillEnrolled) == TRUE) > 0) {
 		students[students$StillEnrolled,]$Status = 'Still Enrolled'
 	}
 	if(length(which(students$StillEnrolled == TRUE & 
-			students$Transferred == TRUE)) > 0) {
+						students$Transferred == TRUE)) > 0) {
 		students[students$StillEnrolled & students$Transferred,]$Status = 'Transferred'
 	}
 	if(length(which(students$Graduated == TRUE)) > 0) {
@@ -119,12 +119,12 @@ cohortDetails <- function(students, graduates,
 		students[,persistColumn] = NULL
 		students$Persisting = as.logical(NA)
 		persistingYes = which(students$Status %in% c('Still Enrolled', 'Transferred') & 
-			persistData)
+							  	persistData)
 		if(length(persistingYes) > 0) {
 			students[persistingYes,]$Persisting = TRUE
 		}
 		persistingNo = which(students$Status %in% c('Still Enrolled', 'Transferred') & 
-			!persistData)
+							 	!persistData)
 		if(length(persistingNo) > 0) {
 			students[persistingNo,]$Persisting = FALSE
 		}
@@ -158,6 +158,13 @@ cohortRetention <- function(students, graduates,
 	cr$gradColumn = gradColumn
 	cr$grouping = grouping
 	cr$ComparisonCohort = max(students[,warehouseDateColumn], na.rm=TRUE)
+	
+	dups <- which(duplicated(students[,c(studentIdColumn, warehouseDateColumn)]))
+	if(length(dups) > 0) {
+		warning('There are students who appear more than once per warehouse date.
+				Removing duplicate records.')
+		students <- students[-dups,]
+	}
 	
 	students <- cohortDetails(students, graduates, 
 							  studentIdColumn=studentIdColumn,
@@ -239,7 +246,7 @@ cohortRetention <- function(students, graduates,
 	}
 	
 	results$Month = diff.month(as.Date(paste(results$Cohort, '-01', sep='')), 
-						  as.Date(cr$ComparisonCohort))
+							   as.Date(cr$ComparisonCohort))
 	cr$Summary = results
 	class(cr) = "CohortRetention"
 	
